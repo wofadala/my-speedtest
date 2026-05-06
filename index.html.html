@@ -2,229 +2,208 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UUID生成器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>实用工具导航 | 9合1在线工具箱</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: #f5f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #e8f4ff, #d4e6ff);
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            padding: 20px;
             min-height: 100vh;
-            padding: 16px;
+            display: flex;
+            flex-direction: column;
         }
+
         .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
             width: 100%;
-            max-width: 500px;
-            background: #fff;
-            border-radius: 20px;
-            padding: 30px 24px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        header {
             text-align: center;
+            margin-bottom: 40px;
         }
-        h1 { font-size: 24px; color: #1a1a2e; margin-bottom: 6px; }
-        .subtitle { font-size: 13px; color: #8a8f9f; margin-bottom: 24px; }
-        .result-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            word-break: break-all;
-            font-family: 'SF Mono', 'Consolas', monospace;
-            font-size: 15px;
-            color: #1a1a2e;
-            min-height: 48px;
+
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #1a6dd4, #0f4e8a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .sub {
+            color: #4f7092;
+            font-size: 0.95rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+            transition: 0.2s;
+            border: 1px solid rgba(0,100,255,0.08);
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
             cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
         }
-        .result-box:hover { background: #f0f4f8; }
-        .result-box:active { background: #e8ecf2; }
-        .copy-hint {
-            position: absolute;
-            top: -10px;
-            right: 10px;
-            background: #4a90d9;
-            color: #fff;
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 10px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.08);
         }
-        .copy-hint.show { opacity: 1; }
-        .btn-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
         }
-        button {
-            padding: 12px 20px;
-            font-size: 15px;
+
+        .tool-title {
+            font-size: 1.3rem;
             font-weight: 600;
+            color: #1a4d7a;
+            margin-bottom: 8px;
+        }
+
+        .tool-desc {
+            color: #6f8faf;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .tool-btn {
+            background: linear-gradient(95deg, #1a6dd4, #0f4e8a);
             border: none;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
+            font-size: 0.9rem;
+            width: 100%;
+            transition: filter 0.2s;
             letter-spacing: 0.5px;
         }
-        .btn-primary {
-            background: #4a90d9;
-            color: #fff;
-            flex: 1;
-            min-width: 120px;
+
+        .tool-btn:hover {
+            filter: brightness(1.08);
         }
-        .btn-primary:hover { background: #3d7ec4; }
-        .btn-secondary {
-            background: #f0f4f8;
-            color: #5a6070;
-            flex: 1;
-            min-width: 120px;
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #7a9aba;
+            font-size: 0.75rem;
+            padding: 16px 0;
         }
-        .btn-secondary:hover { background: #e2e8f0; }
-        .btn-batch {
-            background: #fff;
-            color: #4a90d9;
-            border: 2px solid #4a90d9;
-            width: 100%;
-            margin-top: 6px;
-        }
-        .btn-batch:hover { background: #e8f1fb; }
-        .batch-list {
-            margin-top: 16px;
-            text-align: left;
-        }
-        .batch-list .batch-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-bottom: 6px;
-            font-family: 'SF Mono', 'Consolas', monospace;
-            font-size: 13px;
-            color: #1a1a2e;
-            word-break: break-all;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-        .batch-item:hover { background: #f0f4f8; }
-        .batch-item .batch-copy {
-            background: #e8f1fb;
-            color: #4a90d9;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            flex-shrink: 0;
-            margin-left: 10px;
-        }
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-120px);
-            background: #1a1a2e;
-            color: #fff;
-            padding: 10px 22px;
-            border-radius: 24px;
-            font-size: 13px;
-            font-weight: 700;
-            z-index: 200;
-            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-        }
-        .toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🆔 UUID生成器</h1>
-        <p class="subtitle">生成全局唯一标识符 · 点击复制</p>
+<div class="container">
+    <header>
+        <h1>🛠️ 实用工具导航</h1>
+        <div class="sub">免费 · 干净 · 打开即用</div>
+    </header>
 
-        <div class="result-box" id="resultBox" onclick="copySingle()">
-            <span id="uuidText">点击下方按钮生成</span>
-            <div class="copy-hint" id="copyHint">已复制</div>
-        </div>
+    <div class="tools-grid" id="toolsGrid"></div>
 
-        <div class="btn-row">
-            <button class="btn-primary" onclick="generateOne()">生成一个</button>
-            <button class="btn-secondary" onclick="copySingle()">复制</button>
-        </div>
-        <button class="btn-batch" onclick="generateBatch()">批量生成 10 个</button>
+    <footer>
+        ⚡ 所有工具均在浏览器本地运行 · 不会上传你的任何数据
+    </footer>
+</div>
 
-        <div class="batch-list" id="batchList"></div>
-    </div>
-
-    <div class="toast" id="toast"></div>
-
-    <script>
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0;
-                const v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
+<script>
+    const tools = [
+        {
+            icon: "⚡",
+            name: "网速测试工具",
+            desc: "测延迟、下载速度、上传速度，带进度条",
+            path: "/speedtest/"
+        },
+        {
+            icon: "🔧",
+            name: "JSON格式化工具",
+            desc: "格式化 / 压缩 / 校验 JSON",
+            path: "/json-formatter/"
+        },
+        {
+            icon: "🔐",
+            name: "Base64编码/解码",
+            desc: "文本与Base64互转，支持中文",
+            path: "/base64/"
+        },
+        {
+            icon: "⏱️",
+            name: "时间戳转换工具",
+            desc: "秒级时间戳 ↔ 北京时间",
+            path: "/timestamp/"
+        },
+        {
+            icon: "📊",
+            name: "文本统计分析",
+            desc: "字符数 / 汉字数 / 内容块 / 行数",
+            path: "/text-stats/"
+        },
+        {
+            icon: "🆔",
+            name: "UUID生成器",
+            desc: "生成全球唯一标识符，支持批量生成",
+            path: "/uuid/"
+        },
+        {
+            icon: "🔗",
+            name: "URL编解码",
+            desc: "网址特殊字符编码 / 解码还原",
+            path: "/url/"
+        },
+        {
+            icon: "🔐",
+            name: "MD5/SHA加密",
+            desc: "MD5、SHA-1、SHA-256 哈希加密",
+            path: "/md5/"
+        },
+        {
+            icon: "📱",
+            name: "二维码生成器",
+            desc: "文字/网址一键生成二维码，支持下载",
+            path: "/qrcode/"
         }
+    ];
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            clearTimeout(t._timer);
-            t._timer = setTimeout(() => t.classList.remove('show'), 1500);
-        }
-
-        function showCopyHint() {
-            const hint = document.getElementById('copyHint');
-            hint.classList.add('show');
-            setTimeout(() => hint.classList.remove('show'), 1000);
-        }
-
-        function generateOne() {
-            const uuid = generateUUID();
-            document.getElementById('uuidText').textContent = uuid;
-        }
-
-        function copySingle() {
-            const text = document.getElementById('uuidText').textContent;
-            if (text === '点击下方按钮生成') return;
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyHint();
-                showToast('已复制到剪贴板');
-            }).catch(() => showToast('复制失败，请手动复制'));
-        }
-
-        function generateBatch() {
-            const list = document.getElementById('batchList');
-            list.innerHTML = '';
-            for (let i = 0; i < 10; i++) {
-                const uuid = generateUUID();
-                const div = document.createElement('div');
-                div.className = 'batch-item';
-                div.innerHTML = `<span>${uuid}</span><span class="batch-copy">复制</span>`;
-                div.onclick = function(e) {
-                    if (e.target.classList.contains('batch-copy')) {
-                        e.stopPropagation();
-                    }
-                    navigator.clipboard.writeText(uuid).then(() => showToast('已复制'));
-                };
-                list.appendChild(div);
-            }
-        }
-
-        // 初始生成一个
-        generateOne();
-    </script>
+    const grid = document.getElementById("toolsGrid");
+    tools.forEach(tool => {
+        const card = document.createElement("div");
+        card.className = "tool-card";
+        card.innerHTML = `
+            <div class="tool-icon">${tool.icon}</div>
+            <div class="tool-title">${tool.name}</div>
+            <div class="tool-desc">${tool.desc}</div>
+            <button class="tool-btn">打开工具</button>
+        `;
+        card.addEventListener("click", () => {
+            window.location.href = tool.path;
+        });
+        grid.appendChild(card);
+    });
+</script>
 </body>
 </html>
