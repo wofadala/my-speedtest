@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL编解码</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f5f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .container {
+            width: 100%;
+            max-width: 550px;
+            background: #e8f1fb;
+            border-radius: 20px;
+            padding: 28px 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            border: 2px solid #b0cde8;
+        }
+        h1 { font-size: 24px; color: #1a1a2e; text-align: center; margin-bottom: 6px; }
+        .subtitle { font-size: 13px; color: #5a6070; text-align: center; margin-bottom: 22px; }
+        .section { margin-bottom: 16px; }
+        .section label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #5a6070;
+            margin-bottom: 6px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #b0cde8;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: 'SF Mono', 'Consolas', 'Microsoft YaHei', monospace;
+            resize: vertical;
+            color: #1a1a2e;
+            background: #fff;
+            transition: border 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #4a90d9;
+            background: #fff;
+        }
+        /* 输入框示例文字模糊化 */
+        #inputText.faded {
+            color: #a0aab4;
+        }
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        button {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        .btn-encode {
+            background: #4a90d9;
+            color: #fff;
+        }
+        .btn-encode:hover { background: #3d7ec4; }
+        .btn-decode {
+            background: #f0a040;
+            color: #fff;
+        }
+        .btn-decode:hover { background: #d98c2e; }
+        .btn-copy {
+            background: #3d5a80;
+            color: #fff;
+            flex: 0.5;
+        }
+        .btn-copy:hover { background: #2c4566; }
+        .btn-clear {
+            background: #dce3eb;
+            color: #5a6070;
+            flex: 0.5;
+        }
+        .btn-clear:hover { background: #c8d3de; }
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 200;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .example-hint {
+            font-size: 11px;
+            color: #5a6070;
+            margin-top: 4px;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 URL编解码</h1>
+        <p class="subtitle">网址特殊字符编码 / 解码还原</p>
+
+        <div class="section">
+            <label>📥 输入内容</label>
+            <textarea id="inputText" class="faded" placeholder="例如：https://baidu.com/s?word=你好世界" onclick="clearPlaceholder()">例如：https://baidu.com/s?word=你好世界</textarea>
+            <span class="example-hint" onclick="setExample()">点击这里试试"你好世界"</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn-encode" onclick="encodeURL()">编码</button>
+            <button class="btn-decode" onclick="decodeURL()">解码</button>
+            <button class="btn-copy" onclick="copyResult()">复制结果</button>
+            <button class="btn-clear" onclick="clearAll()">清空</button>
+        </div>
+
+        <div class="section">
+            <label>📤 输出结果</label>
+            <textarea id="outputText" placeholder="编码或解码后的结果显示在这里..." readonly></textarea>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 1500);
+        }
+
+        // 点击输入框时，如果还是示例文字就清空并变清晰
+        function clearPlaceholder() {
+            const input = document.getElementById('inputText');
+            if (input.value === '例如：https://baidu.com/s?word=你好世界') {
+                input.value = '';
+            }
+            input.classList.remove('faded');
+        }
+
+        function encodeURL() {
+            const input = document.getElementById('inputText');
+            // 自动清除示例文字
+            if (input.value === '例如：https://baidu.com/s?word=你好世界') {
+                input.value = 'https://baidu.com/s?word=你好世界';
+            }
+            input.classList.remove('faded');
+            const text = input.value.trim();
+            if (!text) { showToast('请先输入内容'); return; }
+            try {
+                document.getElementById('outputText').value = encodeURIComponent(text);
+                showToast('编码完成 ✓');
+            } catch (e) { showToast('编码失败，请检查输入'); }
+        }
+
+        function decodeURL() {
+            const input = document.getElementById('inputText');
+            if (input.value === '例如：https://baidu.com/s?word=你好世界') {
+                input.value = 'https://baidu.com/s?word=你好世界';
+            }
+            input.classList.remove('faded');
+            const text = input.value.trim();
+            if (!text) { showToast('请先输入内容'); return; }
+            try {
+                document.getElementById('outputText').value = decodeURIComponent(text);
+                showToast('解码完成 ✓');
+            } catch (e) { showToast('解码失败，请检查输入格式是否正确'); }
+        }
+
+        function copyResult() {
+            const output = document.getElementById('outputText').value;
+            if (!output) { showToast('没有可复制的结果'); return; }
+            navigator.clipboard.writeText(output).then(() => {
+                showToast('已复制到剪贴板');
+            }).catch(() => showToast('复制失败，请手动复制'));
+        }
+
+        function clearAll() {
+            const input = document.getElementById('inputText');
+            input.value = '';
+            input.classList.remove('faded');
+            document.getElementById('outputText').value = '';
+            showToast('已清空');
+        }
+
+        function setExample() {
+            const input = document.getElementById('inputText');
+            input.value = '例如：https://baidu.com/s?word=你好世界';
+            input.classList.add('faded');
+            document.getElementById('outputText').value = '';
+            showToast('已填入示例文字');
+        }
+    </script>
+</body>
+</html>
