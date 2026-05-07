@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            background: linear-gradient(135deg, #f5f9ff 0%, #e9f0fa 100%);
+            background: #f5f6f8;
             font-family: 'Inter', 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             display: flex;
@@ -23,11 +23,10 @@
         .tool-container {
             width: 100%;
             max-width: 750px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            background: #e8f1fb;
             border-radius: 2.5rem;
-            box-shadow: 0 25px 50px -10px rgba(0, 32, 64, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            border: 2px solid #b0cde8;
             padding: 2.2rem 2rem;
             transition: all 0.2s ease;
         }
@@ -38,7 +37,7 @@
         h1 {
             font-size: 2.2rem;
             font-weight: 500;
-            color: #0a2647;
+            color: #1a1a2e;
             letter-spacing: -0.5px;
             margin-bottom: 0.3rem;
             display: flex;
@@ -46,36 +45,36 @@
             gap: 0.5rem;
         }
         h1 span {
-            background: #d4e2fc;
+            background: #c8ddf5;
             font-size: 1rem;
             font-weight: 500;
             padding: 0.2rem 1rem;
             border-radius: 2rem;
-            color: #0b3b6b;
+            color: #1a1a2e;
             letter-spacing: 0.3px;
         }
         .subhead {
-            color: #3f5570;
+            color: #5a6070;
             margin-bottom: 2.2rem;
             font-weight: 400;
-            border-left: 4px solid #2a6eb0;
+            border-left: 4px solid #4a90d9;
             padding-left: 1rem;
             font-size: 0.95rem;
         }
         .section {
-            background: #ffffff;
+            background: #fff;
             border-radius: 1.5rem;
             padding: 1.5rem 1.5rem;
             margin-bottom: 1.8rem;
-            box-shadow: 0 5px 18px rgba(0, 20, 50, 0.04);
-            border: 1px solid #eef3fc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid #c8ddf5;
         }
         .section-title {
             font-weight: 600;
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            color: #1e3b5c;
+            color: #1a1a2e;
             margin-bottom: 1.2rem;
         }
         .input-row {
@@ -88,23 +87,22 @@
         .input-field {
             flex: 1;
             min-width: 160px;
-            background: #f9fcff;
-            border: 1px solid #d9e5f5;
+            background: #fff;
+            border: 1px solid #b0cde8;
             border-radius: 2.5rem;
             padding: 0.75rem 1.3rem;
             font-size: 1rem;
             font-family: 'JetBrains Mono', monospace;
-            color: #0b2b44;
+            color: #1a1a2e;
             outline: none;
             transition: all 0.2s;
         }
         .input-field:focus {
-            border-color: #2a6eb0;
-            box-shadow: 0 0 0 3px rgba(42, 110, 176, 0.12);
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.12);
         }
         .input-blur-hint {
-            color: #a0b3cc;
-            filter: blur(0.7px);
+            color: #a0aab4;
             font-weight: 400;
             letter-spacing: 0.3px;
             opacity: 0.75;
@@ -122,19 +120,19 @@
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
             font-size: 1rem;
-            background: #f9fcff;
-            border: 1px solid #d9e5f5;
+            background: #fff;
+            border: 1px solid #b0cde8;
             border-radius: 1rem;
-            color: #0b2b44;
+            color: #1a1a2e;
             outline: none;
             transition: 0.15s;
         }
         .datetime-part:focus {
-            border-color: #2a6eb0;
-            box-shadow: 0 0 0 3px rgba(42, 110, 176, 0.12);
+            border-color: #4a90d9;
+            box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.12);
         }
         .datetime-part::placeholder {
-            color: #a0b3cc;
+            color: #a0aab4;
             font-weight: 400;
             opacity: 0.7;
         }
@@ -145,65 +143,62 @@
             user-select: none;
         }
         .btn {
-            background: #0e2f4f;
-            border: 1px solid #0a2647;
+            background: #4a90d9;
+            border: none;
             padding: 0.75rem 1.7rem;
             border-radius: 2.5rem;
             font-weight: 500;
             font-size: 0.95rem;
-            color: #ffffff;
+            color: #fff;
             cursor: pointer;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
             white-space: nowrap;
-            box-shadow: 0 6px 14px rgba(14, 47, 79, 0.25);
             letter-spacing: 0.3px;
             flex-shrink: 0;
         }
         .btn:hover {
-            background: #1a446b;
-            border-color: #0e2f4f;
+            background: #3d7ec4;
         }
         .result-box {
-            background: #f2f6fd;
+            background: #fff;
             border-radius: 2rem;
             padding: 0.8rem 1.3rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 1.1rem;
-            color: #0c2b4b;
+            color: #1a1a2e;
             word-break: break-all;
             min-height: 3.2rem;
             display: flex;
             align-items: center;
-            border: 1px solid #d9e5f5;
+            border: 1px solid #b0cde8;
             margin-top: 0.5rem;
             transition: all 0.2s;
         }
         .result-placeholder {
-            color: #a0b3cc;
-            filter: blur(0.6px);
+            color: #a0aab4;
             opacity: 0.8;
             font-weight: 400;
         }
         .copy-hint {
             font-size: 0.8rem;
-            color: #2a6eb0;
+            color: #4a90d9;
             cursor: pointer;
             margin-top: 0.3rem;
             display: inline-block;
         }
         .copy-hint:hover { text-decoration: underline; }
         .copy-row { display: flex; justify-content: flex-end; }
-        .footer-note { text-align: center; font-size: 0.8rem; color: #5b6f85; margin-top: 1rem; }
+        .footer-note { text-align: center; font-size: 0.8rem; color: #8a8f9f; margin-top: 1rem; }
         .now-indicator {
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
             font-size: 0.8rem;
-            color: #2a6eb0;
-            background: rgba(42, 110, 176, 0.06);
+            color: #4a90d9;
+            background: rgba(74, 144, 217, 0.08);
             padding: 0.35rem 0.9rem;
             border-radius: 2rem;
             cursor: pointer;
@@ -211,8 +206,8 @@
             margin-top: 0.4rem;
         }
         .now-indicator:hover {
-            background: rgba(42, 110, 176, 0.12);
-            border-color: #2a6eb0;
+            background: rgba(74, 144, 217, 0.15);
+            border-color: #4a90d9;
         }
 
         .month-options {
@@ -221,7 +216,7 @@
             top: 110%;
             left: 0;
             background: white;
-            border: 1px solid #d9e5f5;
+            border: 1px solid #b0cde8;
             border-radius: 1rem;
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             z-index: 10;
@@ -239,11 +234,11 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
             text-align: center;
-            color: #0b2b44;
+            color: #1a1a2e;
             transition: background 0.1s;
         }
         .month-option:hover {
-            background: #e9f1ff;
+            background: #e8f1fb;
         }
     </style>
 </head>
@@ -329,7 +324,6 @@
 
         const dateInputs = [yearInp, monthInp, dayInp, hourInp, minuteInp, secondInp];
 
-        // 上方模糊提示
         const applyHint = (input, hintText) => {
             if (input.value.trim() === '' || input.value === hintText) {
                 input.value = hintText;
@@ -352,7 +346,6 @@
 
         const thresholds = [null, 2, 4, 3, 6, 6];
 
-        // 年份
         yearInp.addEventListener('input', function() {
             if (this.value.length === 4) focusNext(0);
         });
@@ -367,7 +360,6 @@
             this.value = num;
         });
 
-        // 月、日、时、分、秒
         dateInputs.forEach((inp, idx) => {
             if (idx === 0) return;
 
@@ -434,7 +426,6 @@
                 }
             });
 
-            // 所有日期输入框支持回车键触发转换（包括秒）
             inp.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -469,7 +460,6 @@
             monthOptions.classList.remove('active');
         };
 
-        // 日期转时间戳（修正版：使用东八区字符串解析）
         const getTimestampFromInputs = () => {
             const y = parseInt(yearInp.value, 10);
             const m = parseInt(monthInp.value, 10);
@@ -479,7 +469,6 @@
             const s = parseInt(secondInp.value, 10);
             if ([y, m, d, h, min, s].some(v => isNaN(v))) return null;
 
-            // 构造带时区的ISO字符串，确保按北京时间解析
             const dateStr = `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}T${String(h).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(s).padStart(2,'0')}+08:00`;
             const date = new Date(dateStr);
             if (isNaN(date.getTime())) return null;
