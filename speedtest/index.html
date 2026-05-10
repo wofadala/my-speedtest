@@ -34,7 +34,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            /* 修复点：允许在屏幕高度不足时滚动 */
+            overflow-y: auto;
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
             user-select: none;
@@ -44,16 +45,15 @@
         /* 👇 工具主体：蓝色背景 */
         .app-container {
             width: 100%;
-            max-width: 530px;
-            height: 100vh;
-            height: 100dvh;
+            max-width: 500px;
+            min-height: 100vh;
+            min-height: 100dvh;
             background: #4a90d9;
             background-image: linear-gradient(160deg, #4a90d9 0%, #5e9edb 50%, #7ab4f0 100%);
             border-radius: 20px;
             box-shadow: 0 16px 44px rgba(0, 0, 0, 0.14);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
         }
 
         /* ========== 全部内容区（整体下移 + 均匀分布） ========== */
@@ -208,9 +208,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
-            gap: 8px;
+            gap: 10px 8px;
             width: 100%;
             flex-shrink: 0;
+            margin-top: 0;
         }
         .metric-box {
             background: rgba(255, 255, 255, 0.92);
@@ -266,7 +267,6 @@
             display: flex;
             gap: 8px;
         }
-        /* 👇 场景卡片加外框 */
         .exp-card {
             flex: 1;
             background: rgba(255, 255, 255, 0.92);
@@ -390,7 +390,7 @@
                 font-size: 15px;
             }
             .metrics-grid {
-                gap: 6px;
+                gap: 7px 5px;
             }
             .exp-row {
                 gap: 6px;
@@ -444,7 +444,7 @@
                 font-size: 14px;
             }
             .metrics-grid {
-                gap: 4px;
+                gap: 5px 4px;
             }
             .exp-row {
                 gap: 4px;
