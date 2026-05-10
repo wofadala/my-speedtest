@@ -34,7 +34,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 修复点：允许在屏幕高度不足时滚动 */
             overflow-y: auto;
             -webkit-tap-highlight-color: transparent;
             -webkit-font-smoothing: antialiased;
@@ -42,7 +41,6 @@
             -webkit-user-select: none;
         }
 
-        /* 👇 工具主体：蓝色背景 */
         .app-container {
             width: 100%;
             max-width: 500px;
@@ -56,17 +54,15 @@
             flex-direction: column;
         }
 
-        /* ========== 全部内容区（整体下移 + 均匀分布） ========== */
         .content-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
             padding: 18px 20px 10px;
             gap: 10px;
-            justify-content: space-between;
         }
 
-        /* ========== 顶部标题 ========== */
+        /* 顶部标题 */
         .header {
             text-align: center;
             flex-shrink: 0;
@@ -83,106 +79,64 @@
             color: rgba(255, 255, 255, 0.85);
             font-weight: 500;
             margin-top: 4px;
-            letter-spacing: 0.8px;
         }
 
-        /* ========== 仪表盘区 ========== */
+        /* 仪表盘区域 */
         .meter-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             flex-shrink: 0;
         }
-        .meter-ring-wrap {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-        .meter-ring-wrap:active .meter-center-btn {
-            transform: translate(-50%, -50%) scale(0.94);
-            background: #3569a8;
-        }
-        .meter-svg {
-            width: 160px;
-            height: 160px;
-            transform: rotate(-90deg);
-        }
-        .meter-bg {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.25);
-            stroke-width: 9;
-        }
-        .meter-fg {
-            fill: none;
-            stroke: #ffffff;
-            stroke-width: 9;
-            stroke-linecap: round;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
-            transition: stroke-dashoffset 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .meter-fg.testing {
-            animation: progressGlow 0.75s ease-in-out infinite;
-        }
-        @keyframes progressGlow {
-            0%,
-            100% {
-                stroke-width: 9;
-            }
-            50% {
-                stroke-width: 14;
-            }
-        }
 
+        /* 测速按钮 */
         .meter-center-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 84px;
-            height: 84px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: #ffffff;
             color: #3d7ec4;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             letter-spacing: 1px;
             border: none;
             cursor: pointer;
             z-index: 10;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
-            transition: var(--transition);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2px;
+            gap: 4px;
             line-height: 1.2;
+        }
+        /* 鼠标悬停效果 */
+        .meter-center-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            background: #f0f6ff;
+            color: #2d6eb5;
+        }
+        /* 点击效果 */
+        .meter-center-btn:active {
+            transform: scale(0.95);
+            background: #dce8f5;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         .meter-center-btn:disabled {
             background: #e8f0f8;
             color: #8aafd4;
             cursor: not-allowed;
-            animation: btnPulse 1.2s ease-in-out infinite;
-        }
-        @keyframes btnPulse {
-            0%,
-            100% {
-                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
-            }
-            50% {
-                box-shadow: 0 4px 30px rgba(255, 255, 255, 0.45);
-            }
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         .meter-center-btn .btn-spinner {
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2.5px solid rgba(61, 126, 196, 0.3);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(61, 126, 196, 0.3);
             border-top-color: #3d7ec4;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
@@ -193,8 +147,26 @@
             }
         }
         .meter-center-btn .btn-icon {
-            font-size: 20px;
+            font-size: 24px;
             line-height: 1;
+        }
+
+        /* 条状进度条 */
+        .progress-bar-wrap {
+            width: 100%;
+            max-width: 260px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #ffffff;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
         }
         .meter-hint {
             font-size: 12px;
@@ -203,15 +175,13 @@
             font-weight: 500;
         }
 
-        /* ========== 四个指标：2×2 均匀网格 ========== */
+        /* 四个指标 */
         .metrics-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 10px 8px;
+            gap: 8px;
             width: 100%;
             flex-shrink: 0;
-            margin-top: 0;
         }
         .metric-box {
             background: rgba(255, 255, 255, 0.92);
@@ -221,10 +191,6 @@
             text-align: center;
             box-shadow: var(--shadow-sm);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
         .metric-box .m-label {
             font-size: 11px;
@@ -237,7 +203,6 @@
             font-size: 20px;
             font-weight: 700;
             color: #1a1a2e;
-            letter-spacing: -0.5px;
         }
         .metric-box .m-value.m-dl {
             color: #3d7ec4;
@@ -251,7 +216,7 @@
             margin-top: 2px;
         }
 
-        /* ========== 场景体验 ========== */
+        /* 场景体验 */
         .exp-section {
             flex-shrink: 0;
         }
@@ -317,17 +282,16 @@
             color: #c0392b;
         }
 
-        /* ========== 底部提示 ========== */
+        /* 底部提示 */
         .footer-note {
             text-align: center;
             font-size: 11px;
             color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 0.5px;
             flex-shrink: 0;
             padding-bottom: 4px;
         }
 
-        /* ========== Toast ========== */
+        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -347,53 +311,25 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* ========== 响应式 ========== */
+        /* 响应式 */
         @media (max-width: 440px) {
-            .app-container {
-                max-width: 100%;
-                border-radius: 0;
-            }
             .content-wrapper {
                 padding: 14px 14px 6px;
                 gap: 7px;
             }
-            .meter-ring-wrap {
-                width: 140px;
-                height: 140px;
-            }
-            .meter-svg {
-                width: 140px;
-                height: 140px;
-            }
-            .meter-bg {
-                cx: 70;
-                cy: 70;
-                r: 60;
-            }
-            .meter-fg {
-                cx: 70;
-                cy: 70;
-                r: 60;
-            }
             .meter-center-btn {
-                width: 72px;
-                height: 72px;
-                font-size: 12px;
+                width: 120px;
+                height: 120px;
+                font-size: 14px;
             }
             .meter-center-btn .btn-icon {
-                font-size: 17px;
+                font-size: 20px;
             }
             .metric-box .m-value {
                 font-size: 17px;
             }
             .exp-card .exp-value {
                 font-size: 15px;
-            }
-            .metrics-grid {
-                gap: 7px 5px;
-            }
-            .exp-row {
-                gap: 6px;
             }
         }
 
@@ -405,31 +341,13 @@
             .header-title {
                 font-size: 20px;
             }
-            .meter-ring-wrap {
-                width: 120px;
-                height: 120px;
-            }
-            .meter-svg {
-                width: 120px;
-                height: 120px;
-            }
-            .meter-bg {
-                cx: 60;
-                cy: 60;
-                r: 50;
-            }
-            .meter-fg {
-                cx: 60;
-                cy: 60;
-                r: 50;
-            }
             .meter-center-btn {
-                width: 62px;
-                height: 62px;
-                font-size: 11px;
+                width: 100px;
+                height: 100px;
+                font-size: 13px;
             }
             .meter-center-btn .btn-icon {
-                font-size: 14px;
+                font-size: 18px;
             }
             .metric-box {
                 padding: 6px 4px;
@@ -443,22 +361,12 @@
             .exp-card .exp-value {
                 font-size: 14px;
             }
-            .metrics-grid {
-                gap: 5px 4px;
-            }
-            .exp-row {
-                gap: 4px;
-            }
-            .footer-note {
-                font-size: 10px;
-            }
         }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <!-- 全部内容统一管理间距 -->
         <div class="content-wrapper">
             <!-- 顶部标题 -->
             <div class="header">
@@ -466,23 +374,21 @@
                 <div class="header-subtitle">一键测速 · 真实反馈</div>
             </div>
 
-            <!-- 仪表盘 -->
+            <!-- 仪表盘区域 -->
             <div class="meter-section">
-                <div class="meter-ring-wrap" onclick="startTest()">
-                    <svg class="meter-svg" viewBox="0 0 160 160">
-                        <circle class="meter-bg" cx="80" cy="80" r="68"/>
-                        <circle class="meter-fg" id="meterFg" cx="80" cy="80" r="68"
-                        stroke-dasharray="427.26" stroke-dashoffset="427.26"/>
-                    </svg>
-                    <button class="meter-center-btn" id="meterBtn" onclick="event.stopPropagation(); startTest();">
-                        <span class="btn-icon">⚡</span>
-                        测速
-                    </button>
+                <!-- 测速按钮 -->
+                <button class="meter-center-btn" id="meterBtn" onclick="startTest()">
+                    <span class="btn-icon">⚡</span>
+                    点击测试
+                </button>
+                <!-- 条状进度条 -->
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" id="progressFill"></div>
                 </div>
-                <div class="meter-hint" id="meterHint">点击中间按钮检测网速</div>
+                <div class="meter-hint" id="meterHint">点击上方按钮检测网速</div>
             </div>
 
-            <!-- 四个指标：2×2 均匀网格 -->
+            <!-- 四个指标 -->
             <div class="metrics-grid">
                 <div class="metric-box">
                     <div class="m-label">下载速度</div>
@@ -536,14 +442,11 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script>
         (function() {
-            const CIRC = 2 * Math.PI * 68;
             let testing = false;
-
             const $ = (id) => document.getElementById(id);
 
             function showToast(msg) {
@@ -554,18 +457,12 @@
                 t._timer = setTimeout(() => t.classList.remove('show'), 1800);
             }
 
-            function setProgress(fraction) {
-                const clamped = Math.max(0, Math.min(1, fraction));
-                $('meterFg').style.strokeDashoffset = CIRC * (1 - clamped);
+            function setProgress(percentage) {
+                $('progressFill').style.width = percentage + '%';
             }
 
             function resetProgress() {
-                const fg = $('meterFg');
-                fg.classList.remove('testing');
-                fg.style.transition = 'none';
-                fg.style.strokeDashoffset = CIRC;
-                fg.getBoundingClientRect();
-                fg.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                $('progressFill').style.width = '0%';
             }
 
             async function measureLatency(rounds = 5) {
@@ -665,10 +562,7 @@
                 btn.disabled = true;
                 btn.innerHTML = '<span class="btn-spinner"></span>';
 
-                $('meterFg').classList.add('testing');
                 resetProgress();
-                setProgress(0);
-
                 $('meterHint').textContent = '测试中...';
                 $('metricDownload').textContent = '...';
                 $('metricDLTraffic').textContent = '';
@@ -683,14 +577,12 @@
                 $('expVideoVal').textContent = '...';
                 $('expVideoGrade').style.display = 'none';
 
-                let animFrame;
-                let phase = 0;
-                const animate = () => {
-                    phase += 0.04;
-                    setProgress(0.06 + Math.abs(Math.sin(phase * 2.5)) * 0.24);
-                    animFrame = requestAnimationFrame(animate);
-                };
-                animFrame = requestAnimationFrame(animate);
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 8;
+                    if (progress > 90) progress = 90;
+                    setProgress(progress);
+                }, 300);
 
                 try {
                     const latRes = await measureLatency();
@@ -701,16 +593,16 @@
                         $('metricLatency').textContent = '--';
                         $('metricJitter').textContent = '--';
                     }
-                    setProgress(0.15);
+                    setProgress(40);
 
                     const dlRes = await downloadTest();
                     if (dlRes) {
                         $('metricDownload').textContent = dlRes.speedMbps.toFixed(2);
                         $('metricDLTraffic').textContent = dlRes.trafficMB.toFixed(2) + ' M';
-                        setProgress(Math.min(1, dlRes.speedMbps / 120));
                     } else {
                         $('metricDownload').textContent = '--';
                     }
+                    setProgress(70);
 
                     const ulRes = await uploadTest();
                     if (ulRes) {
@@ -719,7 +611,7 @@
                     } else {
                         $('metricUpload').textContent = '--';
                     }
-
+                    setProgress(100);
                     $('meterHint').textContent = '测试完成';
 
                     const lat = latRes.latency || 60;
@@ -747,18 +639,19 @@
 
                 } catch (e) {
                     showToast('测速异常，请重试');
-                    $('meterHint').textContent = '点击中间按钮检测网速';
+                    $('meterHint').textContent = '点击上方按钮检测网速';
                 } finally {
-                    cancelAnimationFrame(animFrame);
-                    $('meterFg').classList.remove('testing');
-                    btn.disabled = false;
-                    btn.innerHTML = '<span class="btn-icon">⚡</span>测速';
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerHTML = '<span class="btn-icon">⚡</span>点击测试';
+                        resetProgress();
+                    }, 500);
                     testing = false;
                 }
             };
 
             resetProgress();
-            setProgress(0);
         })();
     </script>
 </body>
