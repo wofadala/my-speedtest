@@ -2,27 +2,31 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>正则表达式测试</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: #f5f6f8;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 12px;
-            overflow: hidden;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .container {
             width: 100%;
             max-width: 900px;
-            height: 100vh;
+            min-height: calc(100vh - 24px);
+            min-height: calc(100dvh - 24px);
             background: #e8f1fb;
             border-radius: 20px;
-            padding: 16px 24px 12px;
+            padding: 16px 24px 20px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.06);
             border: 2px solid #b0cde8;
             display: flex;
@@ -38,7 +42,7 @@
         .subtitle { font-size: 12px; color: #5a6070; text-align: center; margin-bottom: 10px; }
 
         .row { display: flex; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
-        .col { flex: 1; min-width: 280px; }
+        .col { flex: 1; min-width: 250px; }
 
         label {
             display: block;
@@ -69,7 +73,7 @@
             font-style: italic;
         }
 
-        textarea { height: 70px; }
+        textarea { height: 65px; }
 
         .flags-row {
             display: flex;
@@ -167,7 +171,7 @@
             color: #1a1a2e;
             overflow-y: auto;
             flex: 1;
-            min-height: 50px;
+            min-height: 45px;
         }
         .match-item {
             padding: 3px 0;
@@ -226,6 +230,18 @@
             pointer-events: none;
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            body { padding: 8px; padding-bottom: env(safe-area-inset-bottom, 16px); }
+            .container { padding: 12px 14px 14px; border-radius: 16px; }
+            h1 { font-size: 20px; }
+            .row { gap: 8px; }
+            .col { min-width: 100%; }
+            textarea { height: 55px; }
+            button { padding: 7px 12px; font-size: 12px; }
+            .template-tag { font-size: 10px; padding: 3px 8px; }
+        }
     </style>
 </head>
 <body>
@@ -328,18 +344,6 @@
             return flags;
         }
 
-        function setAllPlaceholders() {
-            if (highlightBox.innerHTML === '' || highlightBox.querySelector('.placeholder')) {
-                highlightBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
-            }
-            if (matchList.querySelector('.placeholder')) {
-                matchList.innerHTML = '<div class="placeholder" style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
-            }
-            if (replaceBox.innerHTML === '' || replaceBox.querySelector('.placeholder')) {
-                replaceBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
-            }
-        }
-
         function autoTest() {
             const pattern = regexInput.value.trim();
             const text = testText.value;
@@ -352,9 +356,9 @@
             matchCount.textContent = '0';
 
             if (!pattern) {
-                highlightBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
-                matchList.innerHTML = '<div class="placeholder" style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
-                replaceBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
+                highlightBox.innerHTML = '<span style="color:#a0aab4;">结果显示……</span>';
+                matchList.innerHTML = '<div style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
+                replaceBox.innerHTML = '<span style="color:#a0aab4;">结果显示……</span>';
                 return;
             }
 
@@ -368,7 +372,7 @@
             }
 
             const highlighted = text.replace(regex, (match) => `<span class="hl">${match}</span>`);
-            highlightBox.innerHTML = highlighted || '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
+            highlightBox.innerHTML = highlighted || '<span style="color:#a0aab4;">结果显示……</span>';
 
             const matches = [];
             let m;
@@ -381,7 +385,7 @@
             matchCount.textContent = matches.length;
 
             if (matches.length === 0) {
-                matchList.innerHTML = '<div class="placeholder" style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
+                matchList.innerHTML = '<div style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
             } else {
                 let html = '';
                 matches.forEach((match, i) => {
@@ -399,7 +403,7 @@
                 const replaced = text.replace(regex, replacement);
                 replaceBox.innerHTML = replaced || text;
             } else {
-                replaceBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
+                replaceBox.innerHTML = '<span style="color:#a0aab4;">结果显示……</span>';
             }
         }
 
@@ -413,9 +417,9 @@
             regexInput.value = '';
             testText.value = '';
             replaceInput.value = '';
-            highlightBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
-            matchList.innerHTML = '<div class="placeholder" style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
-            replaceBox.innerHTML = '<span class="placeholder" style="color:#a0aab4;">结果显示……</span>';
+            highlightBox.innerHTML = '<span style="color:#a0aab4;">结果显示……</span>';
+            matchList.innerHTML = '<div style="color:#a0aab4;text-align:center;padding:8px;">结果显示……</div>';
+            replaceBox.innerHTML = '<span style="color:#a0aab4;">结果显示……</span>';
             matchCount.textContent = '0';
             errorMsg.textContent = '';
         }
