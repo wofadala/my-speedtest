@@ -18,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .card {
@@ -72,23 +72,25 @@
 
         .button-group {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
             margin: 16px 0;
+            flex-wrap: nowrap; /* 👈 关键：禁止换行 */
         }
 
         button {
             background: #4a90d9;
             border: none;
-            padding: 12px 18px;
+            padding: 12px 6px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: white;
             cursor: pointer;
             transition: 0.2s;
             flex: 1;
+            min-width: 0; /* 👈 允许按钮在窄屏下压缩 */
             letter-spacing: 0.5px;
+            white-space: nowrap; /* 👈 按钮文字不换行 */
         }
 
         button:hover {
@@ -133,6 +135,18 @@
             font-size: 11px;
             color: #8a8f9f;
             margin-top: 14px;
+        }
+
+        /* 👇 手机端进一步缩小按钮字号 */
+        @media (max-width: 480px) {
+            button {
+                font-size: 12px;
+                padding: 10px 4px;
+                letter-spacing: 0;
+            }
+            .card {
+                padding: 20px 16px;
+            }
         }
     </style>
 </head>
