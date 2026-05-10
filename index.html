@@ -41,22 +41,8 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            position: relative;
         }
         .tool-card:hover { transform: translateY(-4px); box-shadow: 0 20px 30px rgba(0,0,0,0.08); }
-        .tool-card.frequent { border-color: #4a90d9; border-width: 2px; }
-        .use-badge {
-            position: absolute;
-            top: 12px;
-            right: 14px;
-            background: #4a90d9;
-            color: #fff;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 14px;
-            letter-spacing: 0.5px;
-        }
         .tool-icon { font-size: 2.5rem; margin-bottom: 12px; }
         .tool-title { font-size: 1.3rem; font-weight: 600; color: #1a4d7a; margin-bottom: 8px; }
         .tool-desc { color: #6f8faf; font-size: 0.85rem; margin-bottom: 20px; line-height: 1.4; flex: 1; }
@@ -67,15 +53,6 @@
             font-size: 0.9rem; width: 100%; transition: filter 0.2s; letter-spacing: 0.5px;
         }
         .tool-btn:hover { filter: brightness(1.08); }
-        .section-divider {
-            grid-column: 1 / -1;
-            font-size: 13px;
-            color: #8a9ab5;
-            font-weight: 600;
-            padding: 0 4px;
-            margin: 2px 0 -10px 0;
-            letter-spacing: 0.5px;
-        }
         footer { text-align: center; margin-top: 20px; color: #7a9aba; font-size: 0.75rem; padding: 16px 0; }
         footer a { color: #5a6070; text-decoration: none; margin: 0 10px; font-size: 0.8rem; }
         footer a:hover { color: #1a6dd4; text-decoration: underline; }
@@ -97,77 +74,46 @@
     </footer>
 </div>
 <script>
-    // 👇 按全网热度预设的默认排序（排名靠前 = 大众使用最多）
     const tools = [
-        { id: "qrcode", icon: "📱", name: "二维码生成器", desc: "文字/网址一键生成二维码，支持下载", path: "/qrcode/", hotRank: 1 },
-        { id: "json-formatter", icon: "🔧", name: "JSON格式化工具", desc: "格式化 / 压缩 / 校验 JSON", path: "/json-formatter/", hotRank: 2 },
-        { id: "base64", icon: "🔐", name: "Base64编码/解码", desc: "文本与Base64互转，支持中文", path: "/base64/", hotRank: 3 },
-        { id: "md5", icon: "🔑", name: "MD5/SHA加密", desc: "MD5、SHA-1、SHA-256 哈希加密", path: "/md5/", hotRank: 4 },
-        { id: "uuid", icon: "🆔", name: "UUID生成器", desc: "生成全球唯一标识符，支持批量生成", path: "/uuid/", hotRank: 5 },
-        { id: "regex", icon: "🔍", name: "正则表达式测试", desc: "匹配 · 提取 · 替换 · 可视化高亮", path: "/regex/", hotRank: 6 },
-        { id: "speedtest", icon: "⚡", name: "网速测试工具", desc: "测延迟、下载速度、上传速度，带进度条", path: "/speedtest/", hotRank: 7 },
-        { id: "timestamp", icon: "⏱️", name: "时间戳转换工具", desc: "秒级时间戳 ↔ 北京时间", path: "/timestamp/", hotRank: 8 },
-        { id: "url", icon: "🔗", name: "URL编解码", desc: "网址特殊字符编码 / 解码还原", path: "/url/", hotRank: 9 },
-        { id: "text-stats", icon: "📊", name: "文本统计分析", desc: "字符数 / 汉字数 / 内容块 / 行数", path: "/text-stats/", hotRank: 10 }
+        { icon: "⚡", name: "网速测试工具", desc: "测延迟、下载速度、上传速度，带进度条", path: "/speedtest/" },
+        { icon: "🔧", name: "JSON格式化工具", desc: "格式化 / 压缩 / 校验 JSON", path: "/json-formatter/" },
+        { icon: "🔐", name: "Base64编码/解码", desc: "文本与Base64互转，支持中文", path: "/base64/" },
+        { icon: "⏱️", name: "时间戳转换工具", desc: "秒级时间戳 ↔ 北京时间", path: "/timestamp/" },
+        { icon: "📊", name: "文本统计分析", desc: "字符数 / 汉字数 / 内容块 / 行数", path: "/text-stats/" },
+        { icon: "🆔", name: "UUID生成器", desc: "生成全球唯一标识符，支持批量生成", path: "/uuid/" },
+        { icon: "🔗", name: "URL编解码", desc: "网址特殊字符编码 / 解码还原", path: "/url/" },
+        { icon: "🔑", name: "MD5/SHA加密", desc: "MD5、SHA-1、SHA-256 哈希加密", path: "/md5/" },
+        { icon: "📱", name: "二维码生成器", desc: "文字/网址一键生成二维码，支持下载", path: "/qrcode/" },
+        { icon: "🔍", name: "正则表达式测试", desc: "匹配 · 提取 · 替换 · 可视化高亮", path: "/regex/" }
     ];
 
-    // 👇 读取用户个人使用数据
-    let usage = {};
-    try {
-        usage = JSON.parse(localStorage.getItem('toolUsage')) || {};
-    } catch(e) {
-        usage = {};
-    }
+    // 收集已用和未用的工具
+    const usedPaths = JSON.parse(localStorage.getItem('usedTools') || '[]');
+    const usedTools = tools.filter(t => usedPaths.includes(t.path));
+    const unusedTools = tools.filter(t => !usedPaths.includes(t.path));
 
-    // 👇 给每个工具标记用户用了多少次
-    tools.forEach(t => {
-        t.userCount = usage[t.id] || 0;
-    });
-
-    // 👇 排序逻辑：用户常用的排最前面，没用的按热度预排顺序
-    // 先按"用户是否用过"分组，再组内按"使用次数 / 热度"排序
-    const used = tools.filter(t => t.userCount > 0).sort((a, b) => b.userCount - a.userCount);
-    const unused = tools.filter(t => t.userCount === 0).sort((a, b) => a.hotRank - b.hotRank);
-    const sorted = [...used, ...unused];
-
-    // 👇 判断是否有用户常用工具
-    const hasUsedTools = used.length > 0;
+    // 已用的排前面，未用的排后面，紧凑排列
+    const sortedTools = [...usedTools, ...unusedTools];
 
     const grid = document.getElementById("toolsGrid");
-    let isFirstUnused = true;
-
-    sorted.forEach((tool, index) => {
-        // 👇 在用过和没用过之间加一个分隔线
-        if (hasUsedTools && index === used.length && isFirstUnused) {
-            const divider = document.createElement("div");
-            divider.className = "section-divider";
-            divider.textContent = "📋 更多工具";
-            grid.appendChild(divider);
-            isFirstUnused = false;
-        }
-
+    sortedTools.forEach(tool => {
         const card = document.createElement("div");
         card.className = "tool-card";
-
-        // 👇 常用的标记
-        if (tool.userCount > 0) {
-            card.classList.add('frequent');
-        }
-
         card.innerHTML = `
-            ${tool.userCount > 0 ? `<span class="use-badge">已用${tool.userCount}次</span>` : ''}
             <div class="tool-icon">${tool.icon}</div>
             <div class="tool-title">${tool.name}</div>
             <div class="tool-desc">${tool.desc}</div>
             <button class="tool-btn">打开工具</button>
         `;
-
         card.addEventListener("click", () => {
-            usage[tool.id] = (usage[tool.id] || 0) + 1;
-            localStorage.setItem('toolUsage', JSON.stringify(usage));
+            // 记录使用
+            const used = JSON.parse(localStorage.getItem('usedTools') || '[]');
+            if (!used.includes(tool.path)) {
+                used.push(tool.path);
+                localStorage.setItem('usedTools', JSON.stringify(used));
+            }
             window.location.href = tool.path;
         });
-
         grid.appendChild(card);
     });
 </script>
