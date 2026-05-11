@@ -94,25 +94,35 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 400px;
+            min-height: 200px;
             background: #fff;
             border-radius: 12px;
             border: 1px solid #b0cde8;
             margin-bottom: 6px;
+            position: relative;
             overflow: hidden;
         }
         .qr-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            max-width: 220px;
+            max-height: 220px;
             padding: 10px;
         }
         .qr-placeholder {
             color: #a0aab4;
             font-size: 14px;
             text-align: center;
-            width: 100%;
+            padding: 20px;
+        }
+        .qr-generating {
+            color: #4a90d9;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+            animation: pulse-text 1.2s ease-in-out infinite;
+        }
+        @keyframes pulse-text {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         .size-row {
             display: flex;
@@ -252,34 +262,49 @@
             const qrPlaceholder = document.getElementById('qrPlaceholder');
             const size = getCurrentSize();
 
+            // 移除旧图片
             const oldImg = qrPreview.querySelector('img');
             if (oldImg) oldImg.remove();
 
             if (!input) {
                 qrPlaceholder.style.display = 'block';
                 qrPlaceholder.textContent = '生成对应二维码';
+                qrPlaceholder.className = 'qr-placeholder';
                 return;
             }
 
-            qrPlaceholder.style.display = 'none';
+            // 👇 立即显示"生成中"提示
+            qrPlaceholder.style.display = 'block';
+            qrPlaceholder.textContent = '⏳ 二维码生成中……';
+            qrPlaceholder.className = 'qr-generating';
 
             const img = document.createElement('img');
             img.alt = '二维码';
+            img.style.display = 'none'; // 先隐藏，加载完成后再显示
             img.src = generateQRDataUrl(input, size);
+
+            img.onload = function() {
+                // 加载完成：隐藏提示，显示二维码
+                qrPlaceholder.style.display = 'none';
+                img.style.display = 'block';
+                qrPreview.appendChild(img);
+            };
 
             img.onerror = function() {
                 qrPlaceholder.style.display = 'block';
                 qrPlaceholder.textContent = '生成失败，请检查网络或内容';
+                qrPlaceholder.className = 'qr-placeholder';
                 img.remove();
             };
 
+            // 先把图片添加到预览区（隐藏状态）
             qrPreview.appendChild(img);
         }
 
         function downloadQR() {
             const qrPreview = document.getElementById('qrPreview');
             const img = qrPreview.querySelector('img');
-            if (!img || !img.src) {
+            if (!img || !img.src || img.style.display === 'none') {
                 showToast('请先生成二维码');
                 return;
             }
@@ -309,6 +334,7 @@
             if (oldImg) oldImg.remove();
             qrPlaceholder.style.display = 'block';
             qrPlaceholder.textContent = '生成对应二维码';
+            qrPlaceholder.className = 'qr-placeholder';
             showToast('已清空');
         }
 
